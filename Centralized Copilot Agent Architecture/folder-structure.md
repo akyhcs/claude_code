@@ -1,0 +1,1 @@
+That covers the full picture — the home directory for your universal prompts, the per-repo `.github/` for project-specific config, the IDE settings to wire the instructions, and the symlink commands to bridge the sub-agents into each repo. The `.gitignore` entry keeps the symlinks local so teammates can point to their own home directory setup.
