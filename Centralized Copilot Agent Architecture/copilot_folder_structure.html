@@ -1,0 +1,56 @@
+
+<style>
+.tree{font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+.tree .dir{color:var(--color-text-info);font-weight:500}
+.tree .file{color:var(--color-text-primary)}
+.tree .comment{color:var(--color-text-tertiary);font-style:italic}
+.section-label{font-family:var(--font-sans);font-size:14px;font-weight:500;color:var(--color-text-primary);margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.section-label i{font-size:16px;color:var(--color-text-secondary)}
+.badge{display:inline-block;font-family:var(--font-sans);font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-left:8px;font-weight:400}
+.badge-home{background:var(--color-background-info);color:var(--color-text-info)}
+.badge-repo{background:var(--color-background-warning);color:var(--color-text-warning)}
+.divider{border:none;border-top:1px dashed var(--color-border-tertiary);margin:16px 0}
+</style>
+
+<div class="section-label"><i class="ti ti-home" aria-hidden="true"></i> Home directory <span class="badge badge-home">user-level — loads everywhere</span></div>
+<pre class="tree"><span class="dir">~/copilot-prompts/</span>
+├── <span class="file">copilot-instructions.md</span>      <span class="comment">← universal Spring Boot standards</span>
+├── <span class="file">code-reviewer.agent.md</span>       <span class="comment">← review sub-agent (reusable)</span>
+└── <span class="file">test-writer.agent.md</span>         <span class="comment">← testing sub-agent (reusable)</span></pre>
+
+<hr class="divider">
+
+<div class="section-label"><i class="ti ti-folder" aria-hidden="true"></i> Each project repo <span class="badge badge-repo">repo-level — project-specific only</span></div>
+<pre class="tree"><span class="dir">order-service/</span>
+├── <span class="dir">.github/</span>
+│   ├── <span class="file">copilot-instructions.md</span>  <span class="comment">← stack, entities, domain rules</span>
+│   └── <span class="dir">agents/</span>                   <span class="comment">← symlinks to home-level agents</span>
+│       ├── <span class="file">code-reviewer.agent.md</span> → <span class="comment">~/copilot-prompts/code-reviewer.agent.md</span>
+│       └── <span class="file">test-writer.agent.md</span>   → <span class="comment">~/copilot-prompts/test-writer.agent.md</span>
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">main/java/...</span>
+│   └── <span class="dir">test/java/...</span>
+├── <span class="file">pom.xml</span>
+└── <span class="file">.gitignore</span>                    <span class="comment">← add: .github/agents/*.agent.md</span></pre>
+
+<hr class="divider">
+
+<div class="section-label"><i class="ti ti-settings" aria-hidden="true"></i> IDE wiring</div>
+<pre class="tree"><span class="comment">VS Code — settings.json (user-level)</span>
+{
+  "<span class="dir">github.copilot.chat.codeGeneration.instructions</span>": [
+    { "<span class="file">file</span>": "<span class="comment">~/copilot-prompts/copilot-instructions.md</span>" }
+  ]
+}
+
+<span class="comment">IntelliJ — Settings → Tools → GitHub Copilot → Chat</span>
+  Code Generation Instructions → <span class="comment">~/copilot-prompts/copilot-instructions.md</span></pre>
+
+<hr class="divider">
+
+<div class="section-label"><i class="ti ti-terminal" aria-hidden="true"></i> One-time symlink setup per repo</div>
+<pre class="tree"><span class="comment">$ cd order-service</span>
+<span class="comment">$ mkdir -p .github/agents</span>
+<span class="comment">$ ln -s ~/copilot-prompts/code-reviewer.agent.md .github/agents/code-reviewer.agent.md</span>
+<span class="comment">$ ln -s ~/copilot-prompts/test-writer.agent.md   .github/agents/test-writer.agent.md</span>
+<span class="comment">$ echo ".github/agents/*.agent.md" >> .gitignore</span></pre>
